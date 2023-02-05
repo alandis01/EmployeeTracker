@@ -52,8 +52,60 @@ SELECT
     JOIN department
     ON role.department_id = department.id 
         `
-        const [employees] = await db.promise().query(statement);
-        console.table(employees);
-        init();
+    const [employees] = await db.promise().query(statement);
+    console.table(employees);
+    init();
 };
 
+const addDepartment = async () => {
+    prompt([
+        {
+            name: 'job_title',
+            type: 'input',
+            message: 'Input the name of the department you would like to add',
+        }
+    ]).then((answers) => {
+        insert ('department', answers);
+    });
+};
+
+const addRole = async () => {
+    const [departments] = await selectAllNameAndValue('department', 'name', 'id');
+    prompt([
+        {
+            name: 'job_title',
+            type: 'input',
+            message: 'Input the name of the role you would like to add',
+        },
+        {
+            name: 'salary',
+            type: 'number',
+            message: 'What is this the salary for this job title?',
+        },
+        {
+            name: 'department',
+            type: 'list'
+            message: 'What is the ID of the department this role is in?',
+            choices: departments,
+        }
+    ]).then((answers) => {
+        departments.forEach(department => {
+            if (department.name === answers.department) {
+                answers.department = department.id;
+            }
+        });
+
+        db.query(
+            'INSERT INTO employee_db.role SET ?',
+            {
+                job_title: answers.job_title,
+                salary: answers.salary,
+                department_id: answers.department,
+            },
+            (err) => {
+                if (err) throw err;
+                console.log('Successfully added')
+                init();
+            })
+    });
+};
