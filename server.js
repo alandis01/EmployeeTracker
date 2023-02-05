@@ -84,7 +84,7 @@ const addRole = async () => {
         },
         {
             name: 'department',
-            type: 'list'
+            type: 'list',
             message: 'What is the ID of the department this role is in?',
             choices: departments,
         }
@@ -108,4 +108,64 @@ const addRole = async () => {
                 init();
             })
     });
+};
+
+const newEmployee = async () => {
+    let [roles] = await selectAllNameAndValue('role', 'job_title', 'id');
+    let [managers] = await selectAllNameAndValue('employee', 'last_name', 'id');
+    prompt([
+        {
+            name:
+            type:
+            message:
+        },
+        {
+            name:
+            type:
+            message:
+        },
+        {
+            name:
+            type:
+            message:
+            choices:
+        },
+        {
+            name:
+            type:
+            message:
+            choices:
+        }
+    ])
+        .then((answers) => {
+            insert('employee', answers);
+        });
+};
+
+const updateExistingEmployee = async () => {
+    const [employees] = await selectAllNameAndValue('employee', 'last_name', 'last_name');
+    let [roles] = await selectAllNameAndValue('role', 'job_title', 'id');
+    prompt([
+        {
+            name:
+            type:
+            message:
+            choices:
+        },
+        {
+            name:
+            type:
+            message:
+            choices:
+        }
+    ])
+        .then((answer) => {
+           db.query('UPDATE employee SET role_id=? WHERE last_name= ?',
+           [answer.roles, answer.employee],
+           (err) => {
+            if (err) throw err;
+            console.log('Sucesfully updated')
+            init();
+           });
+        });
 };
