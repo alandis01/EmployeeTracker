@@ -206,3 +206,25 @@ const chooseOption = (type) => {
     }
 };
 
+const init = () => {
+    prompt({
+            type: 'rawlist',
+            message: 'Please choose from one of the following:',
+            choices: [
+                'VIEW All Departments',
+                'VIEW All Roles',
+                'VIEW All Employees',
+                'ADD A Department',
+                'ADD A Role',
+                'ADD An Employee',
+                'UPDATE An Employee',
+                'EXIT'
+            ],
+            name: 'type',
+    }) 
+    .then((answers) => {
+        chooseOption(answers.type);
+    });
+};
+
+init();
