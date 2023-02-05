@@ -115,26 +115,26 @@ const newEmployee = async () => {
     let [managers] = await selectAllNameAndValue('employee', 'last_name', 'id');
     prompt([
         {
-            name:
-            type:
-            message:
+            name: 'first_name',
+            type: 'input',
+            message: 'Enter the employee\'s first name',
         },
         {
-            name:
-            type:
-            message:
+            name: 'last_name',
+            type: 'input',
+            message: 'Enter the employee\'s last name',
         },
         {
-            name:
-            type:
-            message:
-            choices:
+            name: 'role_id',
+            type: 'rawlist',
+            message: 'Please select a role for this employee',
+            choices: roles,
         },
         {
-            name:
-            type:
-            message:
-            choices:
+            name: 'manager_id',
+            type: 'rawlist',
+            message: 'Please select a manager for this employee',
+            choices: managers,
         }
     ])
         .then((answers) => {
@@ -147,16 +147,16 @@ const updateExistingEmployee = async () => {
     let [roles] = await selectAllNameAndValue('role', 'job_title', 'id');
     prompt([
         {
-            name:
-            type:
-            message:
-            choices:
+            name: 'employee',
+            type: 'rawlist',
+            message: 'Please select which employee you would like to update',
+            choices: employees, 
         },
         {
-            name:
-            type:
-            message:
-            choices:
+            name: 'roles',
+            type: 'rawlist',
+            message: 'Please select a new role for this employee',
+            choices: roles,
         }
     ])
         .then((answer) => {
@@ -169,3 +169,40 @@ const updateExistingEmployee = async () => {
            });
         });
 };
+
+const chooseOption = (type) => {
+    switch (type) {
+        case 'VIEW All Departments': {
+            selectAll('department', true);
+            break;
+        }
+        case 'VIEW All Roles': {
+            selectAll('role', true);
+            break;
+        }
+        case 'VIEW All Employees': {
+           viewAllEmployees();
+           break;
+        }
+        case 'ADD A Department': {
+            addDepartment();
+            break;
+        }
+        case 'ADD A Role': {
+            addRole();
+            break;
+        }
+        case 'ADD An Employee': {
+            newEmployee();
+            break;
+        }
+        case 'UPDATE An Employee': {
+            updateExistingEmployee();
+            break;
+        }
+        case 'EXIT': {
+            db.end();
+        }
+    }
+};
+
