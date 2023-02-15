@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const prompt = inquirer.createPromptModule();
-const mysql = require('mysql12');
-require('cosnole.table');
+const mysql = require('mysql2');
+require('console.table');
 
 const db = mysql.createConnection({
     user: 'root',
@@ -18,6 +18,7 @@ const insertInto = (table, data) => {
 
 const selectAll = async (table, display) => {
     const results = await db.promise().query('SELECT * FROM ' + table);
+    // console.log("results", results)
     if (display) {
         console.table(results[0]);
         return init();
@@ -60,12 +61,13 @@ SELECT
 const addDepartment = async () => {
     prompt([
         {
-            name: 'job_title',
+            name: 'name',
             type: 'input',
             message: 'Input the name of the department you would like to add',
         }
     ]).then((answers) => {
-        insert ('department', answers);
+        console.log(answers)
+        insertInto('department', answers);
     });
 };
 
@@ -94,7 +96,6 @@ const addRole = async () => {
                 answers.department = department.id;
             }
         });
-
         db.query(
             'INSERT INTO employee_db.role SET ?',
             {
@@ -138,7 +139,7 @@ const newEmployee = async () => {
         }
     ])
         .then((answers) => {
-            insert('employee', answers);
+            insertInto('employee', answers);
         });
 };
 
@@ -206,9 +207,9 @@ const chooseOption = (type) => {
     }
 };
 
-const init = () => {
+function init()  {
     prompt({
-            type: 'rawlist',
+            type: 'list',
             message: 'Please choose from one of the following:',
             choices: [
                 'VIEW All Departments',
