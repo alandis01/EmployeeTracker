@@ -81,7 +81,7 @@ const addRole = async () => {
         },
         {
             name: 'salary',
-            type: 'number',
+            type: 'input',
             message: 'What is this the salary for this job title?',
         },
         {
